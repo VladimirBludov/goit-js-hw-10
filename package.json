@@ -5,7 +5,7 @@
   "main": "index.js",
   "homepage": "https://VladimirBludov.github.io/goit-js-hw-10",
   "scripts": {
-    "dev": "parcel src/*.html",
+    "dev": "parcel src/*.html --no-cache --open",
     "build": "parcel build src/*.html --public-url /goit-js-hw-10/"
   },
   "repository": {
@@ -19,6 +19,8 @@
     "url": "https://github.com/goitacademy/parcel-project-template/issues"
   },
   "devDependencies": {
+    "lodash.debounce": "^4.0.8",
+    "notiflix": "^3.2.2",
     "parcel-bundler": "^1.12.5",
     "parcel-plugin-handlebars-precompile": "^1.0.2",
     "parcel-plugin-nuke-dist": "^1.0.1",
