@@ -11,50 +11,51 @@ const refs = {
   countryInfo: document.querySelector('.country-info'),
 };
 
-refs.inputCountry.addEventListener('input', debounce(onSearchCountry, 300));
+refs.inputCountry.addEventListener('input', debounce(onSearchCountry, DEBOUNCE_DELAY));
 
 function onSearchCountry(e) {
   const nameCountry = e.target.value.trim();
 
   if (nameCountry === '') {
-    refs.countryList.innerHTML = '';
+    resetMarkup();
     return;
   }
 
-  fetchCountries(nameCountry)
-    .then(countries => {
-      if (!countries.length) {
-        return;
-      }
+  fetchCountries(nameCountry).then(chooseMarkup).catch(showError);
+}
 
-      if (countries.length > 10) {
-        Notify.info('Too many matches found. Please enter a more specific name.');
-      }
+function chooseMarkup(countries) {
+  resetMarkup();
+  if (countries.length > 10) {
+    Notify.info('Too many matches found. Please enter a more specific name.');
+  }
 
-      if (countries.length > 1 && countries.length <= 10) {
-        refs.countryList.innerHTML = createMarkupList(countries);
-      }
+  if (countries.length > 1 && countries.length <= 10) {
+    refs.countryList.innerHTML = createMarkupList(countries);
+  }
 
-      if (countries.length === 1) {
-        refs.countryList.innerHTML = createMarkupCountryInfo(countries[0]);
-      }
-      console.log(countries);
-      // const { name, capital, population, flags, languages } = country[0];
-      // console.log(name, capital, population, flags, languages);
-    })
-    .catch(error => {
-      console.log(error);
-      Notify.failure('Oops, there is no country with that name');
-    });
+  if (countries.length === 1) {
+    refs.countryInfo.innerHTML = createMarkupCountryInfo(countries[0]);
+  }
+}
+
+function resetMarkup() {
+  refs.countryList.innerHTML = '';
+  refs.countryInfo.innerHTML = '';
+}
+
+function showError() {
+  resetMarkup();
+  Notify.failure('Oops, there is no country with that name');
 }
 
 function createMarkupList(countries) {
   return countries
-    .map(({ name, capital, population, flags, languages }) => {
+    .map(({ name, flags }) => {
       return `
-      <li>
+      <li class="country-list__item">
         <img class="country-list__img" src="${flags.svg}" alt="Flag of ${name.official}">
-        <span class="country-list__name">${name.official}</span>
+        <span>${name.official}</span>
       </li>
       `;
     })

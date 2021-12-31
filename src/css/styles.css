@@ -25,6 +25,22 @@ body {
   padding: 0;
 }
 
+.country-list__item {
+  display: flex;
+  align-items: center;
+}
+
+.country-list__name {
+  font-size: 2em;
+  font-weight: 700;
+}
+
 .country-list__img {
-  height: 1em;
+  display: inline-block;
+  width: 2em;
+  margin-right: 10px;
+}
+
+.country-list__label {
+  font-weight: 700;
 }
